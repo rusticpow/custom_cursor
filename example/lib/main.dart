@@ -4,8 +4,19 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:custom_cursor/custom_cursor.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await CustomCursorManager.init(Cursors.list);
+
   runApp(const MyApp());
+}
+
+class Cursors {
+  static const star = CustomCursor(
+    macOs: 'cursors/star.pdf',
+  );
+
+  static List<CustomCursor> get list => [star];
 }
 
 class MyApp extends StatefulWidget {
@@ -16,47 +27,41 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _customCursorPlugin = CustomCursor(imageBytes: Uint8List(0));
-
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      // platformVersion =
-      //     await _customCursorPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    // setState(() {
-    //   _platformVersion = platformVersion;
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+        body: Column(children: [
+          Row(
+            children: [
+              MouseRegion(
+                cursor: Cursors.star,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(color: Colors.amber),
+                ),
+              ),
+              MouseRegion(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(color: Colors.blue),
+                ),
+              ),
+              MouseRegion(
+                child: Container(
+                  decoration: const BoxDecoration(color: Colors.cyan),
+                ),
+              ),
+            ],
+          )
+        ]),
       ),
     );
   }
