@@ -10,12 +10,6 @@ class MethodChannelCustomCursor extends CustomCursorPlatform {
   final methodChannel = const MethodChannel('custom_cursor');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
-  }
-
-  @override
   Future<void> activateCustomCursor() {
     return methodChannel.invokeMethod('activateCustomCursor');
   }

@@ -23,10 +23,6 @@ abstract class CustomCursorPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
-
   Future<void> activateCustomCursor() {
     throw UnimplementedError('activateCustomCursor() has not been implemented.');
   }
