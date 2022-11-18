@@ -17,6 +17,10 @@ class CustomCursorManager {
   static final Map<String, CursorObject> _cursors = <String, CursorObject>{};
 
   CursorObject? getCursor(CustomCursor cursor) {
+    if (Platform.isWindows) {
+      return _cursors[cursor.windows!];
+    }
+    
     return _cursors[cursor.macOs!];
   }
 

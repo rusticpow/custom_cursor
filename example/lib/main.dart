@@ -14,6 +14,7 @@ void main() async {
 class Cursors {
   static const star = CustomCursor(
     macOs: 'cursors/star.pdf',
+    windows: 'cursors/star.cur'
   );
 
   static List<CustomCursor> get list => [star];
