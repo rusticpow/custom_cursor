@@ -32,6 +32,7 @@ class CustomCursorManager {
         final bytes = (await rootBundle.load(cursor.windows!)).buffer.asUint8List();
         final curFileName = "${(await getApplicationSupportDirectory())}/{${cursor.windows}}";
         final file = File(curFileName);
+
         if (!await file.exists()) {
           await file.create(recursive: true);
         }
@@ -71,10 +72,19 @@ class _CustomCursorSession extends MouseCursorSession {
       throw Exception("Cursor did not init properly");
     }
 
+    Map<String, dynamic> data = <String, dynamic>{};
+    if (Platform.isMacOS) {
+      data['bytes'] = cursor.bytes;
+    }
+
+    if (Platform.isWindows) {
+      data['curFile'] = cursor.curFile;
+    }
+
     return await MethodChannelCustomCursor().methodChannel.invokeMethod<void>(
-      'activateCustomCursor',
-      <String, dynamic>{'bytes': cursor.bytes},
-    );
+          'activateCustomCursor',
+          data,
+        );
   }
 
   @override
