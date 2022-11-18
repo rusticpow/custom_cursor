@@ -34,8 +34,10 @@ class CustomCursorManager {
         _cursors[cursor.macOs!] = CursorObject(bytes: (await rootBundle.load(cursor.macOs!)).buffer.asUint8List());
       } else if (Platform.isWindows && cursor.windows != null) {
         final bytes = (await rootBundle.load(cursor.windows!)).buffer.asUint8List();
-        final curFileName = "${(await getApplicationSupportDirectory())}/{${cursor.windows}}";
-        final file = File(curFileName);
+         final dir = await getApplicationSupportDirectory();
+        final curFileName = path.join(dir.absolute.path, cursor.windows).replaceAll('/', '\\');
+        print(curFileName);
+       final file = File(curFileName);
 
         if (!await file.exists()) {
           await file.create(recursive: true);
